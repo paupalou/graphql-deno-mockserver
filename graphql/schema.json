@@ -1,0 +1,94 @@
+{
+  "types": [
+    {
+      "name": "User",
+      "fields": {
+        "_id": "ID",
+        "username": "String",
+        "password": "String"
+      }
+    },
+    {
+      "name": "Session",
+      "fields": {
+        "token": "String"
+      }
+    }
+  ],
+
+  "inputs": [
+    {
+      "name": "LoginInput",
+      "fields": {
+        "username": "String",
+        "password": "String"
+      }
+    }
+  ],
+
+  "queries": [
+    {
+      "operation": "testUsers",
+      "typeDef": "testUsers",
+      "return": "[User]",
+      "response": [
+        { "username": "test1!", "password": "test1!" },
+        { "username": "test2!", "password": "test2!" }
+      ]
+    },
+    {
+      "operation": "testUser",
+      "typeDef": "testUser(id: ID)",
+      "return": "User",
+      "possibleResponses": [
+        {
+          "params": { "id": 1 },
+          "response": { "username": "test1!", "password": "test1!" }
+        },
+        {
+          "params": { "id": 2 },
+          "response": { "username": "MissBeauty", "password": "secr3tpa55word" }
+        },
+        {
+          "params": { "id": 3 },
+          "headers": { "authorization": "Basic tokentest" },
+          "response": { "username": "InspectorGadget", "password": "nananana" }
+        },
+        {
+          "params": { "id": 3 },
+          "response": { "username": "Impostor!", "password": "among us" }
+        }
+      ]
+    },
+    {
+      "operation": "getCurrentUser",
+      "typeDef": "getCurrentUser",
+      "return": "User",
+      "possibleResponses": [
+        {
+          "headers": { "authorization": "Basic tokentest" },
+          "response": { "username": "test1!", "password": "test1!" }
+        },
+        {
+          "headers": { "authorization": "Basic beautytoken" },
+          "response": { "username": "MissBeauty", "password": "secr3tpa55word" }
+        }
+      ]
+    }
+  ],
+
+  "mutations": [
+    {
+      "operation": "testLogin",
+      "typeDef": "testLogin(username: String!, password: String!)",
+      "return": "Session",
+      "input": "LoginInput",
+      "possibleResponses": [
+        {
+          "params": { "username": "test1!", "password": "test1!" },
+          "response": { "token": "tokentest" }
+        }
+      ]
+    }
+  ]
+}

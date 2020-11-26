@@ -3,13 +3,13 @@ import { Context } from "https://deno.land/x/oak@v6.2.0/context.ts";
 
 import type {
   Application,
-  State
+  State,
 } from "https://deno.land/x/oak@v6.2.0/application.ts";
 import type { ServerRequest } from "https://deno.land/x/oak@v6.2.0/types.d.ts";
 
 export const userType = Object.freeze({
   name: "User",
-  fields: { _id: "ID", username: "String", password: "String" }
+  fields: { _id: "ID", username: "String", password: "String" },
 });
 
 interface MockServerOptions {
@@ -49,8 +49,7 @@ function createMockServerRequest(
   } as any;
 }
 
-
 export const mockContext = new Context(
   createMockApp(),
-  createMockServerRequest()
+  createMockServerRequest(),
 );

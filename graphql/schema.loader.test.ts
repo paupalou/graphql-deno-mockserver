@@ -7,12 +7,12 @@ Deno.test(
   () => {
     const schemaLoaded = () => loadSchema("inventedPath");
     assertThrows(schemaLoaded);
-  }
+  },
 );
 
 Deno.test(
   "SchemaLoader::loadSchema find schema file when path is correct",
   () => {
     assert(loadSchema("graphql/schema.json"));
-  }
+  },
 );

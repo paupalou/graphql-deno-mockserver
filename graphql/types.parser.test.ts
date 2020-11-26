@@ -11,7 +11,7 @@ Deno.test(
     const schema = {
       types: [
         userType,
-        { name: "Session", fields: { token: "String", } },
+        { name: "Session", fields: { token: "String" } },
       ],
     };
 
@@ -21,13 +21,14 @@ Deno.test(
       "type Session {\n  token: String\n}";
 
     assertEquals(parsed, expected);
-});
+  },
+);
 
 Deno.test(
   "TypesParser::parseType returns correct InputTypeDefinitions",
   () => {
     const schema = {
-      types: [ userType ],
+      types: [userType],
       inputs: [
         {
           name: "LoginInput",
@@ -45,18 +46,19 @@ Deno.test(
     };
 
     const parsed = Schema(schema).parseType(SchemaTypes.InputTypeDefinitions);
-    const expected = 
+    const expected =
       "input LoginInput {\n  username: String\n  password: String\n}\n" +
-      "input CreateBookingInput {\n  bookingPax: String\n  bookingDate: String\n  bookingUser: User\n}"
+      "input CreateBookingInput {\n  bookingPax: String\n  bookingDate: String\n  bookingUser: User\n}";
 
-  assertEquals(parsed, expected);
-});
+    assertEquals(parsed, expected);
+  },
+);
 
 Deno.test(
   "TypesParser::parseType returns correct Query",
   () => {
     const schema = {
-      types: [ userType ],
+      types: [userType],
       queries: [
         {
           operation: "testQuery",
@@ -74,13 +76,14 @@ Deno.test(
     const expected = "type Query {\n  testQuery(): [User]\n}";
 
     assertEquals(parsed, expected);
-});
+  },
+);
 
 Deno.test(
   "TypesParser::parseType returns correct Mutation",
   () => {
     const schema = {
-      types: [ userType ],
+      types: [userType],
       mutations: [
         {
           operation: "testMutation",
@@ -95,13 +98,14 @@ Deno.test(
     const expected = "type Mutation {\n  testMutation(userId: ID): User\n}";
 
     assertEquals(parsed, expected);
-});
+  },
+);
 
 Deno.test(
   "TypesParser::parseType can handle multiple queries",
   () => {
     const schema = {
-      types: [ userType ],
+      types: [userType],
       queries: [
         {
           operation: "testQuery",
@@ -132,7 +136,9 @@ Deno.test(
     };
 
     const parsed = Schema(schema).parseType(SchemaTypes.Queries);
-    const expected = "type Query {\n  testQuery(): [User]\n  testGetUser(id: ID): User\n}"
+    const expected =
+      "type Query {\n  testQuery(): [User]\n  testGetUser(id: ID): User\n}";
 
     assertEquals(parsed, expected);
-});
+  },
+);

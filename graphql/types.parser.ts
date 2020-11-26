@@ -12,9 +12,10 @@ function renderField(fields: { [key: string]: unknown }, keysLength: number) {
 function renderTypeDefinition(definitionObjectType: string) {
   return (typeDef: TypeDef) => {
     const fieldKeys = Object.keys(typeDef.fields);
-    const fields = fieldKeys.map(renderField(typeDef.fields, fieldKeys.length)).join("");
+    const fields = fieldKeys.map(renderField(typeDef.fields, fieldKeys.length))
+      .join("");
     return `${definitionObjectType} ${typeDef.name} {\n  ${fields}\n}`;
-  }
+  };
 }
 
 function parseOperation(query: MockedOperation) {

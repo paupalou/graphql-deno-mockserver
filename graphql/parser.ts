@@ -6,11 +6,7 @@ import {
 } from "./types.parser.ts";
 
 import { parseSchemaResolvers } from "./resolvers.parser.ts";
-import {
-  OperationTypes,
-  SchemaResolvers,
-  SchemaTypes,
-} from "../types.ts";
+import { OperationTypes, SchemaResolvers, SchemaTypes } from "../types.ts";
 
 import type { Schema } from "../types.ts";
 

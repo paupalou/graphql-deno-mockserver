@@ -1,14 +1,14 @@
 import { assert, assertEquals } from "https://deno.land/std/testing/asserts.ts";
 
 import Schema from "./parser.ts";
-import { userType, mockContext } from "../test.helpers.ts";
+import { mockContext, userType } from "../test.helpers.ts";
 import { SchemaResolvers } from "../types.ts";
 
 Deno.test(
   "ResolversParser::parseResolver query resolver returns expected response",
   () => {
     const schema = {
-      types: [ userType ],
+      types: [userType],
       queries: [
         {
           operation: "testQuery",
@@ -34,59 +34,60 @@ Deno.test(
     assertEquals(response.length, 2);
     assertEquals(response[0].username, "test1!");
     assertEquals(response[1].username, "test2!");
-  }
+  },
 );
 
 Deno.test(
   "ResolversParser::parseResolver query resolver finds response that match headers",
   () => {
-  const schema = {
-    types: [ userType ],
-    queries: [
-      {
-        operation: "testQuery",
-        typeDef: "testQuery()",
-        return: "[User]",
-        possibleResponses: [
-          {
-            headers: { authorization: "Basic tokentest" },
-            response: {
-              username: "authorizedUser",
-              password: "authorizedUser!",
+    const schema = {
+      types: [userType],
+      queries: [
+        {
+          operation: "testQuery",
+          typeDef: "testQuery()",
+          return: "[User]",
+          possibleResponses: [
+            {
+              headers: { authorization: "Basic tokentest" },
+              response: {
+                username: "authorizedUser",
+                password: "authorizedUser!",
+              },
             },
-          },
-          {
-            response: {
-              username: "guestUser",
-              password: "gestUser!",
+            {
+              response: {
+                username: "guestUser",
+                password: "gestUser!",
+              },
             },
-          },
-        ],
-      },
-    ],
-  };
+          ],
+        },
+      ],
+    };
 
-  const parsed = Schema(schema).parseResolver(SchemaResolvers.Query);
-  assert(typeof parsed !== "undefined");
+    const parsed = Schema(schema).parseResolver(SchemaResolvers.Query);
+    assert(typeof parsed !== "undefined");
 
-  const context = mockContext;
-  context.request.headers.set("Authorization", "Basic tokentest");
+    const context = mockContext;
+    context.request.headers.set("Authorization", "Basic tokentest");
 
-  const queryResolver = parsed["testQuery"];
-  const response: {
-    username: string;
-    password: string;
-  } = queryResolver(undefined, {}, context);
+    const queryResolver = parsed["testQuery"];
+    const response: {
+      username: string;
+      password: string;
+    } = queryResolver(undefined, {}, context);
 
-  assertEquals(response.username, "authorizedUser");
-  assertEquals(response.password, "authorizedUser!");
-});
+    assertEquals(response.username, "authorizedUser");
+    assertEquals(response.password, "authorizedUser!");
+  },
+);
 
 Deno.test(
   "ResolversParser::parseResolver query resolver can handle multiple queries",
   () => {
     const schema = {
-      types: [ userType ],
+      types: [userType],
       queries: [
         {
           operation: "testQuery",
@@ -140,22 +141,24 @@ Deno.test(
     response = queryResolver(undefined, { to: "Olivia" }, context);
 
     assertEquals(response, "Hello Olivia");
-});
+  },
+);
 
 Deno.test(
   "ResolversParser::parseResolver query resolver not crash if schema does not have queries defined",
   () => {
-    const schema = { types: [ userType ] };
+    const schema = { types: [userType] };
     const parsed = Schema(schema).parseResolver(SchemaResolvers.Query);
 
     assert(typeof parsed !== "undefined");
-});
+  },
+);
 
 Deno.test(
   "ResolversParser::parseResolver mutation resolver returns correct response matching header",
   () => {
     const schema = {
-      types: [ userType ],
+      types: [userType],
       mutations: [
         {
           operation: "login",
@@ -199,14 +202,14 @@ Deno.test(
     response = mutationResolver(undefined, {}, context);
 
     assertEquals(response.username, "Olivia");
-  }
+  },
 );
 
 Deno.test(
   "ResolversParser::parseResolver mutation resolver returns correct response matching params",
   () => {
     const schema = {
-      types: [ userType ],
+      types: [userType],
       mutations: [
         {
           operation: "changePassword",
@@ -215,7 +218,11 @@ Deno.test(
           possibleResponses: [
             {
               params: { userId: 31337, newPassword: "newPassword!" },
-              response: { id: 31337, username: "Pau", password: "newPassword!" },
+              response: {
+                id: 31337,
+                username: "Pau",
+                password: "newPassword!",
+              },
             },
           ],
         },
@@ -233,14 +240,14 @@ Deno.test(
 
     assertEquals(response.username, "Pau");
     assertEquals(response.password, "newPassword!");
-  }
+  },
 );
 
 Deno.test(
   "ResolversParser::parseResolver mutation resolver returns correct response based on headers and/or params",
   () => {
     const schema = {
-      types: [ userType ],
+      types: [userType],
       queries: [],
       mutations: [
         {
@@ -296,4 +303,5 @@ Deno.test(
 
     assertEquals(response.username, "publicUser");
     assertEquals(response.password, "1234");
-});
+  },
+);

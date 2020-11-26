@@ -8,30 +8,32 @@ import type { MockedOperation } from "../types.ts";
 Deno.test(
   "Helpers::GetMatchinResponse returns undefined if schema does not have responses",
   () => {
-  const mockedQuery: MockedOperation = {
-    operation: "QueryOperation",
-    typeDef: "QueryOperation()",
-    return: "String",
-  };
+    const mockedQuery: MockedOperation = {
+      operation: "QueryOperation",
+      typeDef: "QueryOperation()",
+      return: "String",
+    };
 
-  const response = getMatchinResponse(mockedQuery, mockContext);
+    const response = getMatchinResponse(mockedQuery, mockContext);
 
-  assertEquals(response, undefined);
-});
+    assertEquals(response, undefined);
+  },
+);
 
 Deno.test(
   "Helpers::GetMatchinResponse returns undefined if schema have empty responses array",
   () => {
-  const mockedQuery: MockedOperation = {
-    operation: "QueryOperation",
-    typeDef: "QueryOperation()",
-    return: "String",
-    possibleResponses: [],
-  };
+    const mockedQuery: MockedOperation = {
+      operation: "QueryOperation",
+      typeDef: "QueryOperation()",
+      return: "String",
+      possibleResponses: [],
+    };
 
-  const response = getMatchinResponse(mockedQuery, mockContext);
-  assertEquals(response, undefined);
-});
+    const response = getMatchinResponse(mockedQuery, mockContext);
+    assertEquals(response, undefined);
+  },
+);
 
 Deno.test(
   "Helpers::GetMatchinResponse returns correct response depending on Authorization header",
@@ -52,12 +54,13 @@ Deno.test(
       ],
     };
 
-  const context = mockContext
-  context.request.headers.set("Authorization", "Basic tokentest")
-  let response = getMatchinResponse(mockedQuery, context);
-  assertEquals(response, "GreenResponse!");
+    const context = mockContext;
+    context.request.headers.set("Authorization", "Basic tokentest");
+    let response = getMatchinResponse(mockedQuery, context);
+    assertEquals(response, "GreenResponse!");
 
-  context.request.headers.set("Authorization", "UnderCase tokentest")
-  response = getMatchinResponse(mockedQuery, context);
-  assertEquals(response, "UnderCaseTokenGreenResponse!");
-});
+    context.request.headers.set("Authorization", "UnderCase tokentest");
+    response = getMatchinResponse(mockedQuery, context);
+    assertEquals(response, "UnderCaseTokenGreenResponse!");
+  },
+);

@@ -4,7 +4,7 @@ import Schema from "./parser.ts";
 import { mockContext, userType } from "../test.helpers.ts";
 import { SchemaResolvers } from "../types.ts";
 
-type user = { username: string, password: string };
+type user = { username: string; password: string };
 
 Deno.test(
   "ResolversParser::parseResolver query resolver returns expected response",
@@ -222,7 +222,7 @@ Deno.test(
     const parsed = Schema(schema).parseResolver(SchemaResolvers.Mutation);
     const context = mockContext;
     const mutationResolver = parsed["changePassword"];
-    const response= mutationResolver(
+    const response = mutationResolver(
       undefined,
       { userId: 31337, newPassword: "newPassword!" },
       context,

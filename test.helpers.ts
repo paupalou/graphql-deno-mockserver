@@ -25,7 +25,7 @@ function createMockApp<S extends State = Record<string, any>>(
   return {
     state,
     dispatchEvent() {},
-  // deno-lint-ignore no-explicit-any
+    // deno-lint-ignore no-explicit-any
   } as any;
 }
 
@@ -48,7 +48,7 @@ function createMockServerRequest(
     proto,
     url,
     async respond() {},
-  // deno-lint-ignore no-explicit-any
+    // deno-lint-ignore no-explicit-any
   } as any;
 }
 

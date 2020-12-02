@@ -1,6 +1,10 @@
 import { Context } from "https://deno.land/x/oak@v6.2.0/context.ts";
 
-import type { MockedMatchingResponse, MockedOperation, MockedResponse } from "../types.ts";
+import type {
+  MockedMatchingResponse,
+  MockedOperation,
+  MockedResponse,
+} from "../types.ts";
 
 function authorizationHeaderMatch(
   context: Context,

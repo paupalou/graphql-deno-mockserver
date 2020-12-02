@@ -1,13 +1,15 @@
-export type QueryOrMutationFn = (
-  parent: any,
-  inputParams: { input: Record<string, any> },
-  context: any,
-) => unknown;
+import type { RouterContext } from "https://deno.land/x/oak@v6.2.0/mod.ts";
 
-export type MockedResponse = Record<string, any> | Record<string, any>[] | any;
+export type MockedResponse = unknown;
+
+export type QueryOrMutationFn = (
+  parent: unknown,
+  inputParams: Record<string, unknown>,
+  context: Partial<RouterContext>,
+) => MockedResponse;
 
 export type MockedMatchingResponse = {
-  params?: Record<string, any>;
+  params?: Record<string, unknown>;
   headers?: Record<string, string>;
   response: MockedResponse;
 };
@@ -17,17 +19,17 @@ export type MockedOperation = {
   typeDef: string;
   response?: MockedResponse;
   possibleResponses?: MockedMatchingResponse[];
-  return: unknown;
+  return: string;
 };
 
 export type TypeDef = {
   name: string;
-  fields: { [key: string]: any };
+  fields: { [key: string]: unknown };
 };
 
 export type InputDef = {
   name: string;
-  fields: { [key: string]: any };
+  fields: { [key: string]: unknown };
 };
 
 export type Schema = {

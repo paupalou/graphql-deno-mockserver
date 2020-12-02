@@ -4,6 +4,8 @@ import Schema from "./parser.ts";
 import { mockContext, userType } from "../test.helpers.ts";
 import { SchemaResolvers } from "../types.ts";
 
+type user = { username: string, password: string };
+
 Deno.test(
   "ResolversParser::parseResolver query resolver returns expected response",
   () => {
@@ -26,10 +28,7 @@ Deno.test(
     assert(typeof parsed !== "undefined");
 
     const queryResolver = parsed["testQuery"];
-    const response: {
-      username: string;
-      password: string;
-    }[] = queryResolver(undefined, {}, mockContext);
+    const response = queryResolver(undefined, {}, mockContext) as user[];
 
     assertEquals(response.length, 2);
     assertEquals(response[0].username, "test1!");
@@ -73,10 +72,7 @@ Deno.test(
     context.request.headers.set("Authorization", "Basic tokentest");
 
     const queryResolver = parsed["testQuery"];
-    const response: {
-      username: string;
-      password: string;
-    } = queryResolver(undefined, {}, context);
+    const response = queryResolver(undefined, {}, context) as user;
 
     assertEquals(response.username, "authorizedUser");
     assertEquals(response.password, "authorizedUser!");
@@ -128,17 +124,14 @@ Deno.test(
     mockContext.request.headers.set("Authorization", "Basic tokentest");
 
     let queryResolver = parsed["testQuery"];
-    let response: {
-      username: string;
-      password: string;
-    } = queryResolver(undefined, {}, context);
+    let response = queryResolver(undefined, {}, context) as user;
 
     assertEquals(response.username, "authorizedUser");
     assertEquals(response.password, "authorizedUser!");
 
     mockContext.request.headers.delete("Authorization");
     queryResolver = parsed["greetings"];
-    response = queryResolver(undefined, { to: "Olivia" }, context);
+    response = queryResolver(undefined, { to: "Olivia" }, context) as user;
 
     assertEquals(response, "Hello Olivia");
   },
@@ -191,15 +184,12 @@ Deno.test(
     const context = mockContext;
     context.request.headers.set("Authorization", "Basic PauToken");
     const mutationResolver = parsed["login"];
-    let response: {
-      username: string;
-      password: string;
-    } = mutationResolver(undefined, {}, context);
+    let response = mutationResolver(undefined, {}, context) as user;
 
     assertEquals(response.username, "Pau");
 
     context.request.headers.set("Authorization", "Basic OliviaToken");
-    response = mutationResolver(undefined, {}, context);
+    response = mutationResolver(undefined, {}, context) as user;
 
     assertEquals(response.username, "Olivia");
   },
@@ -232,11 +222,11 @@ Deno.test(
     const parsed = Schema(schema).parseResolver(SchemaResolvers.Mutation);
     const context = mockContext;
     const mutationResolver = parsed["changePassword"];
-    const response: { username: string; password: string } = mutationResolver(
+    const response= mutationResolver(
       undefined,
       { userId: 31337, newPassword: "newPassword!" },
       context,
-    );
+    ) as user;
 
     assertEquals(response.username, "Pau");
     assertEquals(response.password, "newPassword!");
@@ -282,14 +272,11 @@ Deno.test(
     context.request.headers.set("Authorization", "Basic GoodToken");
 
     const mutationResolver = parsed["changePassword"];
-    let response: {
-      username: string;
-      password: string;
-    } = mutationResolver(
+    let response = mutationResolver(
       undefined,
       { userId: 8761, newPassword: "securePassword!" },
       context,
-    );
+    ) as user;
 
     assertEquals(response.username, "authorizedUser");
     assertEquals(response.password, "securePassword!");
@@ -299,7 +286,7 @@ Deno.test(
       undefined,
       { userId: 123, newPassword: "1234" },
       context,
-    );
+    ) as user;
 
     assertEquals(response.username, "publicUser");
     assertEquals(response.password, "1234");

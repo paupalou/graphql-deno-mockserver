@@ -1,6 +1,6 @@
 import { Context } from "https://deno.land/x/oak@v6.2.0/context.ts";
 
-import type { MockedMatchingResponse, MockedOperation } from "../types.ts";
+import type { MockedMatchingResponse, MockedOperation, MockedResponse } from "../types.ts";
 
 function authorizationHeaderMatch(
   context: Context,
@@ -26,7 +26,7 @@ function authorizationHeaderMatch(
 
 function allInputParamsMatch(
   response: MockedMatchingResponse,
-  inputParams: Record<string, any> = {},
+  inputParams: Record<string, unknown> = {},
 ): boolean {
   const { params } = response;
   if (!params) {
@@ -42,8 +42,8 @@ function allInputParamsMatch(
 export function getMatchinResponse(
   query: MockedOperation,
   context: Context,
-  inputParams?: Record<string, any>,
-) {
+  inputParams?: Record<string, unknown>,
+): MockedResponse | undefined {
   if (typeof query.possibleResponses === "undefined") {
     return;
   }
